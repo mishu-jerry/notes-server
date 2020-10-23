@@ -4,19 +4,21 @@
  * Check if the client is Authorized (logged in and has permissions),
  * if yes, pass control to the next middleware
  * 
- * The function expects 'x-auth-token' header with the Request object,
+ * The function expects 'authToken' field in Cookie with the Request object,
  * does authorization with the token provided,
- * if successful, add the user's id (from the JWT payload) as _id field
- * to the Request header (req.user._id)
+ * if successful, adds the user's { _id, isAdmin } (from the JWT payload)
+ * to the Request header (req.user._id, req.user.isAdmin)
  */
 
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
 module.exports = function (req, res, next) {
-    const token = req.header('x-auth-token');
+    const token = req.cookies.authToken;
+
     // 401: Unauthorized
-    if (!token) return res.status(401).send('Access denied. No token provided.');
+    if (!token) return res.status(401).send('Access denied. \
+        Not logged in (No token provided).');
 
     try {
         const decodedPayload = jwt.verify(token, config.get('jwtPrivateKey'));

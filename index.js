@@ -4,6 +4,7 @@ const notesRouter = require('./routes/notes');
 const mongoose = require('mongoose');
 const express = require('express');
 const config = require('config');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 if (!config.get('jwtPrivateKey')) {
@@ -31,6 +32,7 @@ mongoose.connect('mongodb://localhost/notes-app', {
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/notes', notesRouter);

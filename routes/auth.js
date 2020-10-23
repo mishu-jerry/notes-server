@@ -1,9 +1,9 @@
 /**
  * Authentication Router
  * 
- * Login (Verify login credentials i.e. email, password) 
- * and send an Authenticaion Token (JWT) / Access credential
- * to the client
+ * Login (Verify login credentials i.e. email, password sent with the 
+ * request body) and assign an Authenticaion Token (JWT) / Access credential
+ * to the cookie
  */
 
 const { User } = require('../models/user');
@@ -18,8 +18,6 @@ const emailMaxLength = 255;
 const passMinLength = 5;
 const passMaxLength = 255;
 
-// Login (with email and password in the request body) and
-// get an Auth Token (JWT)
 router.post('/', async (req, res) => {
 
     // Validation of inputs
@@ -37,9 +35,12 @@ router.post('/', async (req, res) => {
 
     // Generate a JSON Web Token
     const token = user.generateAuthToken();
-
-    // Send the token with the response body to the client
-    res.send(token);
+    
+    // attach the token with cookie
+    res.cookie('authToken', token, {
+        maxAge: 2592000, // 1 month
+        httpOnly: true
+    }).send();
 });
 
 function validate(req) {
