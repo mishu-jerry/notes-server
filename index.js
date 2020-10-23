@@ -24,9 +24,9 @@ if (!config.get('jwtPrivateKey')) {
 }
 
 mongoose.connect('mongodb://localhost/notes-app', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error('Could not connect to MongoDB...', err));
 
@@ -54,16 +54,16 @@ let server = app.listen(8081, function () {
 /**
  * Quick start:
  * ============
- * 
+ *
  * Set environment variable-
  * >> $env:notes_server_jwtPrivateKey = 'myPrivateKey'
- * 
+ *
  * Start Node Monitor-
  * >> nodemon
- * 
+ *
  * Or, run index.js manually-
  * >> node index.js
- * 
- * Visit Homepage-
+ *
+ * Visit-
  * @url http://127.0.0.1:8081/
  */
