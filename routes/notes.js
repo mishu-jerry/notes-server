@@ -82,7 +82,7 @@ router.delete('/', auth, async (req, res) => {
     // 404: Not Found
     if (result.deletedCount === 0) return res.status(404).send(`You don't have any notes.`);
 
-    res.send(`Deleted ${result.deletedCount} notes.`);
+    res.send(`Deleted ${result.deletedCount} note(s).`);
 });
 
 module.exports = router;
