@@ -1,11 +1,17 @@
+// express-async-error module calls next(err) 
+// [next express middleware] automatically when 
+// an exception is thrown
+require('express-async-errors');
+
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const notesRouter = require('./routes/notes');
 const error = require('./middleware/error');
 const mongoose = require('mongoose');
-const express = require('express');
 const config = require('config');
 const cookieParser = require('cookie-parser');
+const express = require('express');
+
 const app = express();
 
 if (!config.get('jwtPrivateKey')) {
