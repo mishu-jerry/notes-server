@@ -1,6 +1,7 @@
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const notesRouter = require('./routes/notes');
+const error = require('./middleware/error');
 const mongoose = require('mongoose');
 const express = require('express');
 const config = require('config');
@@ -36,6 +37,8 @@ app.use(cookieParser());
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/notes', notesRouter);
+
+app.use(error);
 
 app.get('/', function (req, res) {
 
