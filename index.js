@@ -1,18 +1,29 @@
 // express-async-error module calls next(err) 
 // [next express middleware] automatically when 
-// an exception is thrown
+// an exception is thrown from an express middleware
 require('express-async-errors');
 
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const notesRouter = require('./routes/notes');
 const error = require('./middleware/error');
+const errorLogger = require('./modules/logger').error;
 const mongoose = require('mongoose');
-const config = require('config');
+const config = require('config'); // to access system enviroment variables
 const cookieParser = require('cookie-parser');
 const express = require('express');
 
 const app = express();
+
+process.on('uncaughtException', (ex) => {
+    errorLogger.error(ex.message, ex);
+    console.log(ex.message);
+});
+
+// catch Unhandled Promise Rejection, throw exception
+process.on('unhandledRejection', (ex) => {
+    throw ex;
+});
 
 if (!config.get('jwtPrivateKey')) {
 
@@ -41,6 +52,7 @@ mongoose.connect('mongodb://localhost/notes-app', {
 
 app.use(express.json());
 app.use(cookieParser());
+
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/notes', notesRouter);
