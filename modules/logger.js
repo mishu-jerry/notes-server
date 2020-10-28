@@ -32,6 +32,9 @@ exports.info = createLogger({
             db: 'mongodb://localhost/notes-app',
             options: { useUnifiedTopology: true },
             collection: 'info'
+        }),
+        new transports.Console({
+            format: format.simple()
         })
     ]
 });
