@@ -7,7 +7,7 @@ const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const notesRouter = require('./routes/notes');
 const error = require('./middleware/error');
-const errorLogger = require('./modules/logger').error;
+const logger = require('./modules/logger');
 const mongoose = require('mongoose');
 const config = require('config'); // to access system enviroment variables
 const cookieParser = require('cookie-parser');
@@ -16,8 +16,8 @@ const express = require('express');
 const app = express();
 
 process.on('uncaughtException', (ex) => {
-    errorLogger.error(ex.message, ex);
-    console.log(ex.message);
+    logger.error(ex.message, ex);
+    console.log("ERROR caught and logged...");
 });
 
 // catch Unhandled Promise Rejection, throw exception

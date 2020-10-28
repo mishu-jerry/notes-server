@@ -1,34 +1,36 @@
-const winston = require('winston');
+const {
+    createLogger,
+    transports,
+    format
+} = require('winston');
 
-exports.error = winston.createLogger({
-    level: 'error', // 0
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.File({ filename: './logs/error.log' })
-    ]
-});
+require('winston-mongodb');
 
-exports.http = winston.createLogger({
-    level: 'http', // 3
-    format: winston.format.json(),
+module.exports = createLogger({
+    format: format.combine(format.timestamp(), format.json()),
     transports: [
-        new winston.transports.File({ filename: './logs/http.log' })
-    ]
-});
-
-exports.verbose = winston.createLogger({
-    level: 'verbose', // 4
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.File({ filename: './logs/verbose.log' })
-    ]
-});
-
-exports.debug = winston.createLogger({
-    level: 'debug', // 5
-    format: winston.format.json(),
-    transports: [
-        new winston.transports.File({ filename: './logs/debug.log' })
+        new transports.File({
+            level: 'error', // 0
+            filename: './logs/error.log'
+        }),
+        new transports.MongoDB({
+            level: 'error', // 0
+            db: 'mongodb://localhost/notes-app',
+            options: { useUnifiedTopology: true },
+            collection: 'errors'
+        }),
+        new transports.File({
+            level: 'http', // 3
+            filename: './logs/http.log'
+        }),
+        new transports.File({
+            level: 'verbose', // 4
+            filename: './logs/verbose.log'
+        }),
+        new transports.File({
+            level: 'debug', // 5
+            filename: './logs/debug.log'
+        })
     ]
 });
 
