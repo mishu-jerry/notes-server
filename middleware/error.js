@@ -1,9 +1,9 @@
-const logger = require('../modules/logger');
+const errorLogger = require('../modules/logger').error;
 
 module.exports = function(err, req, res, next) {
     // log the error
     // params (error-message, metadata[optional])
-    logger.error(err.message, err);
+    errorLogger.error(err.message, err);
     console.log('ERROR caught and logged...');
     
     // 500: Internal Server Error
