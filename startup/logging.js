@@ -9,7 +9,7 @@ module.exports = function () {
     // process is a global object (Node.js event emitter)
     process.on('uncaughtException', (ex) => {
         error.error(ex.message, ex);
-        console.log('ERROR caught and logged...');
+        console.error('*** ERROR caught and logged');
     });
     
     // catch Unhandled Promise Rejection, throw exception
@@ -22,6 +22,6 @@ module.exports = function () {
     });
 
     process.on('mongoDBConnection', () => {
-        info.info('MongoDB connected...');
+        info.info('MongoDB connected');
     });
 }

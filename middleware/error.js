@@ -4,7 +4,7 @@ module.exports = function(err, req, res, next) {
     // log the error
     // params (error-message, metadata[optional])
     errorLogger.error(err.message, err);
-    console.log('ERROR in Express caught and logged...');
+    console.error('*** ERROR caught in Express and logged');
 
     // Terminate the node application
     // process.exit(1);

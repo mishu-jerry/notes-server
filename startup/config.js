@@ -2,7 +2,7 @@ const config = require('config'); // to access system enviroment variables
 
 module.exports = function () {
     if (!config.get('jwtPrivateKey')) {
-        console.log('FATAL ERROR: jwtPrivateKey is not defined.');
+        console.error('*** FATAL ERROR: jwtPrivateKey is not defined. Terminating.');
         // Terminate the application (index.js)
         process.exit(1);
     }

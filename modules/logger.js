@@ -17,6 +17,10 @@ exports.error = createLogger({
             db: 'mongodb://localhost/notes-app',
             options: { useUnifiedTopology: true },
             collection: 'errors'
+        }),
+        /* only for developement environment */
+        new (transports.Console)({
+            format: format.combine(format.colorize(), format.prettyPrint())
         })
     ]
 });
