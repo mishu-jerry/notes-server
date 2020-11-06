@@ -5,11 +5,11 @@ require('./startup/db')();
 require('./startup/config')();
 require('./startup/routes')(app);
 
-let server = app.listen(8081, function () {
+const port = process.env.port || 3000;
 
+let server = app.listen(port, function () {
     let host = server.address().address;
     let port = server.address().port;
-
     console.log(`===== Server running at http://${host}:${port} =====`);
 
     process.emit('serverStartup');
@@ -29,5 +29,5 @@ let server = app.listen(8081, function () {
  * >> node index.js
  *
  * Visit-
- * @url http://127.0.0.1:8081/
+ * @url http://127.0.0.1:3000/
  */
