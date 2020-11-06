@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 // For Validation
-const joi = require('joi');
+const Joi = require('joi');
 const passwordComplexity = require("joi-password-complexity");
 // For MongoDB models and schemas
 const mongoose = require('mongoose');
@@ -64,9 +64,9 @@ const User = mongoose.model('User', userSchema);
 
 function validate(user) {
 
-    const schema = joi.object({
-        name: joi.string().min(nameMinLength).max(nameMinLength).required(),
-        email: joi.string().min(emailMinLength).max(emailMaxLength).required().email(),
+    const schema = Joi.object({
+        name: Joi.string().min(nameMinLength).max(nameMinLength).required(),
+        email: Joi.string().min(emailMinLength).max(emailMaxLength).required().email(),
         password: passwordComplexity(passwordComplexityOptions, "Password").required()
     });
 

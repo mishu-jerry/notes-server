@@ -1,7 +1,7 @@
 // For MongoDB models and schemas
 const mongoose = require('mongoose');
 // For validation
-const joi = require('joi');
+const Joi = require('joi');
 
 /* Valid Options */
 const titleMaxLength = 50;
@@ -47,9 +47,9 @@ const Note = mongoose.model('Note', noteSchema);
 
 function validate(note) {
 
-    const schema = joi.object({
-        title: joi.string().max(titleMaxLength),
-        note: joi.string().max(noteMaxLength).required()
+    const schema = Joi.object({
+        title: Joi.string().max(titleMaxLength),
+        note: Joi.string().max(noteMaxLength).required()
     });
 
     return schema.validate(note);
