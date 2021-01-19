@@ -5,7 +5,7 @@ require('./startup/db')();
 require('./startup/config')();
 require('./startup/routes')(app);
 
-const port = process.env.port || 3000;
+const port = process.env.port || 8081;
 
 let server = app.listen(port, function () {
     let host = server.address().address;
@@ -14,6 +14,8 @@ let server = app.listen(port, function () {
 
     process.emit('serverStartup');
 });
+
+module.exports = server;
 
 /**
  * Quick start:
