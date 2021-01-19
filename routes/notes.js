@@ -1,4 +1,5 @@
 const auth = require('../middleware/authorizeUser');
+const isValidObjectId = require('../middleware/isValidObjectId');
 const { Note, validate } = require('../models/note');
 const _ = require('lodash');
 const express = require('express');
@@ -6,10 +7,10 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
     const notes = await Note.find({ userId: req.user._id }).select('-userId');
-    res.send(notes);
+    res.send(notes); // status 200 is sent automatically
 });
 
-router.get('/:id', auth, async (req, res) => {
+router.get('/:id', [auth, isValidObjectId], async (req, res) => {
 
     const note = await Note.findById(req.params.id);
 
@@ -34,7 +35,7 @@ router.post('/', auth, async (req, res) => {
     res.send(_.pick(addedNote, ['_id', 'title', 'note', 'createdAt']));
 });
 
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, isValidObjectId], async (req, res) => {
 
     const note = await Note.findById(req.params.id);
 
@@ -58,7 +59,7 @@ router.put('/:id', auth, async (req, res) => {
     res.send(_.pick(updatedNote, ['_id', 'title', 'note', 'updateAt']));
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, isValidObjectId], async (req, res) => {
     const note = await Note.findById(req.params.id);
 
     if (!note || note.userId != req.user._id) {
@@ -71,7 +72,7 @@ router.delete('/:id', auth, async (req, res) => {
 });
 
 router.delete('/', auth, async (req, res) => {
-    
+
     const result = await Note.deleteMany({ userId: req.user._id });
     // 404: Not Found
     if (result.deletedCount === 0) return res.status(404).send(`You don't have any notes.`);

@@ -1,6 +1,7 @@
 const { User, validate } = require('../models/user');
 const auth = require('../middleware/authorizeUser');
 const admin = require('../middleware/authorizeAdmin');
+const isValidObjectId = require('../middleware/isValidObjectId');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const express = require('express');
@@ -38,7 +39,7 @@ router.post('/', async (req, res) => {
     res.header('x-auth-token', token).send(_.pick(user, ['id', 'name', 'email']));
 });
 
-router.delete('/:id', [auth, admin], async (req, res) => {
+router.delete('/:id', [auth, admin, isValidObjectId], async (req, res) => {
 
     const reqUser = await User.findById(req.user._id);
     if (!reqUser.isAdmin) {
@@ -64,7 +65,7 @@ router.delete('/:id', [auth, admin], async (req, res) => {
     res.send(user);
 });
 
-router.post('/makeadmin/:id', [auth, admin], async (req, res) => {
+router.post('/makeadmin/:id', [auth, admin, isValidObjectId], async (req, res) => {
 
     const reqUser = await User.findById(req.user._id);
     if (!reqUser.isAdmin) {
@@ -88,7 +89,7 @@ router.post('/makeadmin/:id', [auth, admin], async (req, res) => {
     res.send(user);
 });
 
-router.post('/removeadmin/:id', [auth, admin], async (req, res) => {
+router.post('/removeadmin/:id', [auth, admin, isValidObjectId], async (req, res) => {
 
     const reqUser = await User.findById(req.user._id);
     if (!reqUser.isAdmin) {
