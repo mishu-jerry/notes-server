@@ -2,6 +2,7 @@
 // [next express middleware] automatically when 
 // an exception is thrown from an express middleware
 require('express-async-errors');
+const config = require('config');
 
 const { error, info } = require('../modules/logger');
 
@@ -22,6 +23,6 @@ module.exports = function () {
     });
 
     process.on('mongoDBConnection', () => {
-        info.info('MongoDB connected');
+        info.info(`MongoDB connected to ${config.get('db')}`);
     });
 }
