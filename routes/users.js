@@ -15,6 +15,7 @@ router.get('/me', auth, async (req, res) => {
     res.send(user);
 });
 
+// sign up
 router.post('/', async (req, res) => {
     
     let { error } = validate(req.body);
@@ -56,6 +57,12 @@ router.delete('/:id', [auth, admin], async (req, res) => {
 
 router.post('/makeadmin/:id', [auth, admin], async (req, res) => {
 
+    const reqUser = await User.findById(req.user._id);
+    if (!reqUser.isAdmin) {
+        // 403: Forbidden
+        return res.status(403).send('Access denied. You are not an admin.');
+    }
+
     const user = await User.findById(req.params.id).select('-password');
 
     // 404: Not Found
@@ -73,6 +80,12 @@ router.post('/makeadmin/:id', [auth, admin], async (req, res) => {
 });
 
 router.post('/removeadmin/:id', [auth, admin], async (req, res) => {
+
+    const reqUser = await User.findById(req.user._id);
+    if (!reqUser.isAdmin) {
+        // 403: Forbidden
+        return res.status(403).send('Access denied. You are not an admin.');
+    }
     
     const user = await User.findById(req.params.id).select('-password');
 
