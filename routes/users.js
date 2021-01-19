@@ -11,13 +11,13 @@ router.get('/me', auth, async (req, res) => {
     const user = await User.findById(req.user._id)
         // exclude the password field
         .select('-password');
-    
+
     res.send(user);
 });
 
 // sign up
 router.post('/', async (req, res) => {
-    
+
     let { error } = validate(req.body);
     // 400: Bad Request
     if (error) return res.status(400).send(error.details[0].message);
@@ -39,6 +39,15 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:id', [auth, admin], async (req, res) => {
+
+    const reqUser = await User.findById(req.user._id);
+    if (!reqUser.isAdmin) {
+        // 403: Forbidden
+        return res.status(403).send('Access denied. You are not an admin.');
+    }
+
+    // 403: Forbidden
+    if (reqUser._id === req.params.id) return res.status(403).send('Cannot delete yourself.');
 
     const user = await User.findById(req.params.id).select('-password');
 
@@ -74,7 +83,7 @@ router.post('/makeadmin/:id', [auth, admin], async (req, res) => {
     }
 
     user.isAdmin = true;
-    user.save();    
+    user.save();
 
     res.send(user);
 });
@@ -86,7 +95,7 @@ router.post('/removeadmin/:id', [auth, admin], async (req, res) => {
         // 403: Forbidden
         return res.status(403).send('Access denied. You are not an admin.');
     }
-    
+
     const user = await User.findById(req.params.id).select('-password');
 
     // 404: Not Found
@@ -98,7 +107,7 @@ router.post('/removeadmin/:id', [auth, admin], async (req, res) => {
     }
 
     user.isAdmin = false;
-    user.save();    
+    user.save();
 
     res.send(user);
 });
