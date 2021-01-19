@@ -1,5 +1,6 @@
 // For MongoDB models and schemas
 const mongoose = require('mongoose');
+const { ObjectId } = require('mongoose').Types;
 // For validation
 const Joi = require('joi');
 
@@ -19,7 +20,7 @@ const noteSchema = new mongoose.Schema({
         maxlength: noteMaxLength
     },
     userId: {
-        type: String,
+        type: ObjectId,
         required: true
     }
 }, { timestamps: true });
