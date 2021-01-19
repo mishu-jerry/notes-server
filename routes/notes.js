@@ -4,14 +4,13 @@ const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
 
-// get all
 router.get('/', auth, async (req, res) => {
     const notes = await Note.find({ userId: req.user._id }).select('-userId');
     res.send(notes);
 });
 
-// get one
 router.get('/:id', auth, async (req, res) => {
+
     const note = await Note.findById(req.params.id);
 
     if (!note || note.userId != req.user._id) {
@@ -22,8 +21,8 @@ router.get('/:id', auth, async (req, res) => {
     res.send(_.pick(note, ['_id', 'title', 'note', 'createdAt', 'updatedAt']));
 });
 
-// post (add) one
 router.post('/', auth, async (req, res) => {
+
     let { error } = validate(req.body);
     // 400: Bad Request
     if (error) return res.status(400).send(error.details[0].message);
@@ -35,9 +34,8 @@ router.post('/', auth, async (req, res) => {
     res.send(_.pick(addedNote, ['_id', 'title', 'note', 'createdAt']));
 });
 
-// put (update) one
 router.put('/:id', auth, async (req, res) => {
-    // Fetch the requested note
+
     const note = await Note.findById(req.params.id);
 
     if (!note || note.userId != req.user._id) {
@@ -45,11 +43,9 @@ router.put('/:id', auth, async (req, res) => {
         return res.status(404).send(`The note doesn't exist or you don't have access to it.`);
     }
 
-    // Update the note
     if (req.body.title) note.title = req.body.title;
     if (req.body.note) note.note = req.body.note;
 
-    // Do validation of the updated note
     let { error } = validate({
         title: note.title,
         note: note.note
@@ -62,9 +58,7 @@ router.put('/:id', auth, async (req, res) => {
     res.send(_.pick(updatedNote, ['_id', 'title', 'note', 'updateAt']));
 });
 
-// delete one
 router.delete('/:id', auth, async (req, res) => {
-    // Fetch the requested note
     const note = await Note.findById(req.params.id);
 
     if (!note || note.userId != req.user._id) {
@@ -76,8 +70,8 @@ router.delete('/:id', auth, async (req, res) => {
     res.send(_.pick(note, ['_id', 'title', 'note', 'createdAt', 'updatedAt']));
 });
 
-// delete all
 router.delete('/', auth, async (req, res) => {
+    
     const result = await Note.deleteMany({ userId: req.user._id });
     // 404: Not Found
     if (result.deletedCount === 0) return res.status(404).send(`You don't have any notes.`);
