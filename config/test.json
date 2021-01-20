@@ -1,4 +1,5 @@
 {
     "jwtPrivateKey": "1234",
-    "db": "mongodb://localhost/notes-app-tests"
+    "db": "mongodb://localhost/notes-app-tests",
+    "port": 0
 }

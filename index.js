@@ -5,7 +5,7 @@ require('./startup/db')();
 require('./startup/config')();
 require('./startup/routes')(app);
 
-const port = process.env.port || 8081;
+const port = process.env.port || require('config').get('port') || 8081;
 
 let server = app.listen(port, function () {
     let host = server.address().address;

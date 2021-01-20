@@ -4,7 +4,7 @@
   "description": "A RESTful web service for a 'note keeping' app with role based Authorization",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testEnvironment=node --watchAll"
+    "test": "jest --testEnvironment=node --runInBand --watchAll --forceExit --detectOpenHandles"
   },
   "keywords": [],
   "author": "Jerry Barman",
